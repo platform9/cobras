@@ -6,6 +6,9 @@ import (
 	"github.com/spf13/cobra"
 	"os"
 	"os/signal"
+
+	_ "github.com/olekukonko/tablewriter"
+	_ "go.uber.org/zap"
 )
 
 type Options interface {
