@@ -3,9 +3,10 @@ package cobras
 import (
 	"context"
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
 	"os/signal"
+
+	"github.com/spf13/cobra"
 
 	_ "github.com/olekukonko/tablewriter"
 	_ "go.uber.org/zap"
@@ -29,10 +30,7 @@ func Run(opts Options) func(cmd *cobra.Command, args []string) {
 			printErrorAndDie(err)
 		}
 
-		ctx, cancel := Context()
-		defer cancel()
-
-		err = opts.Run(ctx)
+		err = opts.Run(cmd.Context())
 		if err != nil {
 			printErrorAndDie(err)
 		}
@@ -56,6 +54,15 @@ func Context() (ctx context.Context, cancel func()) {
 			signal.Stop(c)
 			origCancel()
 		}()
+	}
+}
+
+func Execute(cmd *cobra.Command) {
+	ctx, cancel := Context()
+	defer cancel()
+	err := cmd.ExecuteContext(ctx)
+	if err != nil {
+		printErrorAndDie(err)
 	}
 }
 
