@@ -50,10 +50,8 @@ func Context() (ctx context.Context, cancel func()) {
 		}
 	}()
 	return ctx, func() {
-		func() {
-			signal.Stop(c)
-			origCancel()
-		}()
+		signal.Stop(c)
+		origCancel()
 	}
 }
 
@@ -67,6 +65,6 @@ func Execute(cmd *cobra.Command) {
 }
 
 func printErrorAndDie(err error) {
-	fmt.Fprintf(os.Stderr, "error: %v", err)
+	fmt.Fprintf(os.Stderr, "error: %v\n", err)
 	os.Exit(1)
 }
